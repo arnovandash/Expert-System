@@ -1,14 +1,39 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   opperations.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: rojones <marvin@42.fr>                     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2016/09/26 17:16:01 by rojones           #+#    #+#             */
+/*   Updated: 2016/09/26 17:19:54 by rojones          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-int and(int t1, int t2)
+#include "ex_system.h"
+
+int	ft_and(int t1, int t2)
 {
 	if (t1 && t2)
 		return (1);
 	return (0);
 }
 
-int or(int t1, int t2)
+int	ft_or(int t1, int t2)
 {
 	if(t1 || t2)
 		return (1);
 	return (0);
+}
+
+int	ft_xor(int t1, int t2)
+{
+	if ((t1 == 1 && t2 == 0) || (t1 == 0 && t2 == 1))
+		return (1);
+	return (0);
+}
+
+int	ft_negait(int term)
+{
+	return ((term == 1)? 0 : 1);
 }

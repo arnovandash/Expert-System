@@ -11,7 +11,7 @@
 /* ************************************************************************** */
 
 #ifndef EX_SYSTEM_H
-# define X_SYSTEM_H
+# define EX_SYSTEM_H
 
 # include <libc.h>
 
@@ -21,7 +21,7 @@ typedef struct	s_rule
 	char	*conclusion;
 }				t_rule;
 
-int	ft_and(int t1, int t2);
+int ft_and(int t1, int t2);
 
 int ft_or(int t1, int t2);
 
