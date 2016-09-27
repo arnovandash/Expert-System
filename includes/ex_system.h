@@ -6,7 +6,7 @@
 /*   By: rojones <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/26 16:55:21 by rojones           #+#    #+#             */
-/*   Updated: 2016/09/27 08:29:31 by rojones          ###   ########.fr       */
+/*   Updated: 2016/09/27 15:34:59 by rojones          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,9 @@
 # define EX_SYSTEM_H
 
 # include <libc.h>
+# include <stdio.h>
+# include <string.h>
+# include <ctype.h>
 
 typedef struct	s_rule
 {
@@ -29,6 +32,5 @@ int		ft_xor(int t1, int t2);
 
 int		ft_negate(int t);
 
-void	ft_readfile(char *file, t_rule *rules);
-
+void	ft_read_file(char *file, t_rule *rules);
 #endif

@@ -6,7 +6,7 @@
 #    By: adippena <angusdippenaar@gmail.com>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/07/09 12:47:08 by adippena          #+#    #+#              #
-#    Updated: 2016/09/27 08:07:26 by rojones          ###   ########.fr        #
+#    Updated: 2016/09/27 14:13:19 by rojones          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -35,12 +35,10 @@ exp_sys: $(OBJ)
 clean:
 	@echo "\033[92m    RM    object files\033[0m"
 	@rm -rf build
-	@make -s -C libft clean
 
 fclean: clean
 	@echo "\033[92m    RM    $(NAME)\033[0m"
 	@rm -f $(NAME)
 	@rm -rf $(NAME).dSYM
-	@make -s -C libft fclean
 
 re: fclean all
