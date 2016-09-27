@@ -1,33 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   opperations.c                                      :+:      :+:    :+:   */
+/*   ft_read_file.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rojones <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/09/26 17:16:01 by rojones           #+#    #+#             */
-/*   Updated: 2016/09/26 17:19:54 by rojones          ###   ########.fr       */
+/*   Created: 2016/09/27 08:29:51 by rojones           #+#    #+#             */
+/*   Updated: 2016/09/27 08:39:07 by rojones          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ex_system.h"
 
-int	ft_and(int t1, int t2)
-{
-}
+static	ft_getnum_rules
 
-int ft_or(int t1, int t2)
+void	ft_read_file(char *file, t_rule *rules)
 {
-}
+	int		num_ruls;
 
-int ft_xor(int t1, int t2)
-{
-	if ((t1 == 1 && t2 == 0) || (t1 == 0 && t2 == 1))
-		return (1);
-	return (0);
-}
-
-int ft_negait(int term)
-{
-	return ((term == 1)? 0 : 1);
+	num_rules = ft_getnum_rules(file);
 }
