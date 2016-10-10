@@ -6,7 +6,7 @@
 /*   By: rojones <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/26 16:55:21 by rojones           #+#    #+#             */
-/*   Updated: 2016/10/04 13:42:03 by rojones          ###   ########.fr       */
+/*   Updated: 2016/10/10 14:59:00 by arnovan-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,9 @@ int		ft_negate(int t);
 
 int		ft_eval_condition(char *condition);
 
-void	ft_read_file(char *file, t_rule *rules);
+void	ft_read_file(char *file);
+
+void	ft_read_info(char *file);
 
 char	*ft_strnew(size_t size);
 
