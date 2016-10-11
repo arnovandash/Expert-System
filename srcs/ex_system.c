@@ -6,7 +6,7 @@
 /*   By: rojones <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/26 16:54:18 by rojones           #+#    #+#             */
-/*   Updated: 2016/10/04 14:54:57 by rojones          ###   ########.fr       */
+/*   Updated: 2016/10/11 14:56:09 by arnovan-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,15 +21,21 @@ int main (int ac, char **av)
 	}
 	g_num_rules = 1;
 	bzero(g_facts, 26);
-
+/*
 	puts("facts defalted");
-	//test!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	//test!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	g_facts[0] = 1;
 	g_facts[1] = 1;
 	g_rules = (t_rule*)(malloc(2 * sizeof(t_rule)));
 	g_rules[0].conclusion = "C";
 	g_rules[0].condition = "A+B";
-	puts ("asinged facts");
+	puts ("assigned facts");
 	printf("result %d\n", ft_eval_condition(strdup(av[1])));
-//	ft_read_file(av[1], rules);
+
+	*/
+	ft_read_file(av[1]);
+
+	printf("result G %d\n", ft_solve_for('G'));
+	printf("result V %d\n", ft_solve_for('V'));
+	printf("result X %d\n", ft_solve_for('X'));
 }
