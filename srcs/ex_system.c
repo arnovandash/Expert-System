@@ -6,7 +6,7 @@
 /*   By: rojones <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/26 16:54:18 by rojones           #+#    #+#             */
-/*   Updated: 2016/10/11 14:56:09 by arnovan-         ###   ########.fr       */
+/*   Updated: 2016/10/12 17:33:40 by rojones          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,23 @@ int main (int ac, char **av)
 	*/
 	ft_read_file(av[1]);
 
-	printf("result G %d\n", ft_solve_for('G'));
+int	i = 0;
+while (g_prove[i] != '\0')
+{
+	printf("Array g_prove contains %c at [%d]\n",g_prove[i], i);
+	i++;
+}
+
+i = 0;
+while (g_prove[i] != '\0')
+{
+	int rules_used[g_num_rules];
+
+	bzero(rules_used, g_num_rules);
+	printf("result of %c is %d\n",g_prove[i], ft_solve_for(g_prove[i], rules_used, 0));
+	i++;
+}
+/*	printf("result G %d\n", ft_solve_for('G'));
 	printf("result V %d\n", ft_solve_for('V'));
-	printf("result X %d\n", ft_solve_for('X'));
+	printf("result X %d\n", ft_solve_for('X'));*/
 }

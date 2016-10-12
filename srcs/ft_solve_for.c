@@ -6,7 +6,7 @@
 /*   By: rojones <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/27 15:43:40 by rojones           #+#    #+#             */
-/*   Updated: 2016/10/04 14:57:03 by rojones          ###   ########.fr       */
+/*   Updated: 2016/10/12 17:33:34 by rojones          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,9 @@ static int	ft_check_rule(char *conclusion, char fact)
 	while(conclusion[++i] != '\0')
 	{
 		if (conclusion[i] == fact)
-			return (1);
+			return (i);
 	}
-	return (0);
+	return (-1);
 }
 
 static int	ft_bracket_length(int start, char *condition)
@@ -44,7 +44,7 @@ static int	ft_bracket_length(int start, char *condition)
 	return (i);
 }
 
-static int	ft_eval_brackets(char *condition)
+static int	ft_eval_brackets(char *condition, int *rules_used, int num_rules_used)
 {
 	int		st;
 	int		end;
@@ -61,17 +61,17 @@ static int	ft_eval_brackets(char *condition)
 	left = memcpy(left, condition, st);
 	temp = memcpy(temp, &condition[st + 1], end - st - 1);
 	right = memcpy(right, &condition[end + 1], strlen(condition) - end);
-	brace = ft_eval_condition(temp);
+	brace = ft_eval_condition(temp, rules_used, num_rules_used);
 	temp = ft_strnew(strlen(left) + strlen(right) + 1);
 	temp = memcpy(temp, left, strlen(left));
 	temp[strlen(left)] = brace + '0';
 	temp = strcat(temp, right);
 	free(left);
 	free(right);
-	return (ft_eval_condition(temp));
+	return (ft_eval_condition(temp, rules_used, num_rules_used));
 }
 
-int		ft_eval_condition(char *condition)
+int		ft_eval_condition(char *condition, int *rules_used, int num_rules_used)
 {
 	int 	neg1 = 0;
 	int		neg2 = 0;
@@ -82,18 +82,21 @@ int		ft_eval_condition(char *condition)
 
 	op = -2;
 	if (condition[1] == '\0')
-		return((isalpha(condition[0])) ? ft_solve_for(condition[0]) : condition[0] - '0');
+		return((isalpha(condition[0])) ? ft_solve_for(condition[0], rules_used, num_rules_used) : condition[0] - '0');
 
 	if (strchr(condition, '(') == NULL)
 	{
 		neg1 = (condition[0] == '!') ? 1 : 0;
 		neg2 = (condition[2 + neg1] == '!')?1 : 0;
-		t1 =(isalpha(condition[0 + neg1]))? ft_solve_for(condition[0 + neg1]) : condition[0 + neg1] - '0';
-		t2 =(isalpha(condition[2 + neg1 + neg2]))? ft_solve_for(condition[2 + neg1 + neg2]) : condition[2 + neg1 + neg2] - '0';
+		t1 =(isalpha(condition[0 + neg1]))? ft_solve_for(condition[0 + neg1], rules_used, num_rules_used) : condition[0 + neg1] - '0';
+		t2 =(isalpha(condition[2 + neg1 + neg2]))? ft_solve_for(condition[2 + neg1 + neg2], rules_used, num_rules_used) : 
+			condition[2 + neg1 + neg2] - '0';
 		if (neg1)
 			t1 = ft_negate(t1);
 		if (neg2)
 			t2 = ft_negate(t2);
+		if (t1 == -2 || t2 == -2)
+			return (-2);
 		switch (condition[1 + neg1]) 
 		{
 			case '+':
@@ -113,27 +116,52 @@ int		ft_eval_condition(char *condition)
 			ncon = ft_strnew(1 + (strlen(&condition[3 + neg1 + neg2])));
 			ncon[0] = '0' + op;
 			ncon = strcat(ncon, &condition[3 + neg1 + neg2]);
-			op = ft_eval_condition(ncon);
+			op = ft_eval_condition(ncon, rules_used, num_rules_used);
 		}
 	}
 	else
 	{
-		op = ft_eval_brackets(condition);
+		op = ft_eval_brackets(condition, rules_used, num_rules_used);
 	}
 	free (condition);
 
 	return op;
 }
 
-int	ft_solve_for(char fact)
+static int	isused(int *rules_used, int num_rules_used, int check)
 {
 	int i = 0;
 
+	while (i < num_rules_used)
+	{
+		if (rules_used[i] == check)
+			return (1);
+		i++;
+	}
+	return (0);
+}
+
+int	ft_solve_for(char fact, int *rules_used, int num_rules_used)
+{
+	int i = 0;
+	int pos;
+	int re;
+
 	while (i < g_num_rules)
 	{
-		if (ft_check_rule(g_rules[i].conclusion, fact))
+		if (isused(rules_used, num_rules_used, i) == 0 && (pos = ft_check_rule(g_rules[i].conclusion, fact)) != -1)
 		{
-			return(ft_eval_condition(strdup(g_rules[i].condition)));
+			rules_used[num_rules_used++] = i;
+			if (strchr(g_rules[i].conclusion, '|') || strchr(g_rules[i].conclusion, '^')) 
+				return (-2);
+			re = ft_eval_condition(strdup(g_rules[i].condition), rules_used, num_rules_used);
+			if (pos != 0)
+			{
+				if (g_rules[i].conclusion[pos - 1] == '!')
+					re = ft_negate(re);
+			}
+			g_facts[fact - 'A'] = re;
+			return(re);
 		}
 		i++;
 	}

@@ -6,7 +6,7 @@
 /*   By: rojones <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/26 16:55:21 by rojones           #+#    #+#             */
-/*   Updated: 2016/10/10 14:59:00 by arnovan-         ###   ########.fr       */
+/*   Updated: 2016/10/12 17:33:42 by rojones          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,10 @@ typedef struct	s_rule
 
 int		g_num_rules;
 int		g_facts[26];
+int		g_default[26];
+int		g_set[26];
 t_rule	*g_rules;
+char	*g_prove;
 
 int		ft_and(int t1, int t2);
 
@@ -36,7 +39,7 @@ int		ft_xor(int t1, int t2);
 
 int		ft_negate(int t);
 
-int		ft_eval_condition(char *condition);
+int		ft_eval_condition(char *condition, int *rules_used, int num_rules_used);
 
 void	ft_read_file(char *file);
 
@@ -44,5 +47,7 @@ void	ft_read_info(char *file);
 
 char	*ft_strnew(size_t size);
 
-int		ft_solve_for(char fact);
+int		ft_solve_for(char fact, int *rules_used, int num_rules_used);
+
+void	ft_validate_rule(int rulenum, int line_no);
 #endif
