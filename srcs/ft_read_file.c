@@ -6,7 +6,7 @@
 /*   By: rojones <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/27 08:29:51 by rojones           #+#    #+#             */
-/*   Updated: 2016/10/12 17:33:32 by rojones          ###   ########.fr       */
+/*   Updated: 2016/10/13 12:09:58 by rojones          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,17 +68,30 @@ void 	get_con(char *line, int i, int rule_no)
 	{
 		if (isspace(line[i]))
 			i++;
+		else if (line[i] == '!')
+		{
+			int num = 0;
+			while ((line[i] == '!' || isspace(line[i])) && line[i] != '\0')
+			{
+				if (line[i] == '!')
+					num++;
+				i++;
+			}
+			if (num % 2 == 1)
+				g_rules[rule_no].conclusion[k++] = '!';
+		}
 		else 
 			g_rules[rule_no].conclusion[k++] = line[i++];
 	}
 	g_rules[rule_no].conclusion[k] = '\0';
 }
 
-void 	get_rule(char *line, int i, int rule_no)
+void 	get_rule(char *line, int i, int *rule_no)
 {
 	int k = 0;
+	int by = 0;
 
-	g_rules[rule_no].condition = (char *)(malloc(ft_strlen_rule(&line[i])));
+	g_rules[*rule_no].condition = (char *)(malloc(ft_strlen_rule(&line[i])));
 	while (line[i] != '=' && line[i] != '<' && line[i] != '\0')
 	{
 		if (isspace(line[i]))
@@ -93,13 +106,21 @@ void 	get_rule(char *line, int i, int rule_no)
 				i++;
 			}
 			if (num % 2 == 1)
-				g_rules[rule_no].condition[k++] = '!';
+				g_rules[*rule_no].condition[k++] = '!';
 		}
 		else 
-			g_rules[rule_no].condition[k++] = line[i++];
+			g_rules[*rule_no].condition[k++] = line[i++];
 	}
-	g_rules[rule_no].condition[k] = '\0';
-	get_con(line, i, rule_no);
+	if (line[i] == '<')
+		by = 1;
+	g_rules[*rule_no].condition[k] = '\0';
+	get_con(line, i, *rule_no);
+	if(by == 1)
+	{
+		g_rules[*rule_no + 1].condition = g_rules[*rule_no].conclusion;
+		g_rules[*rule_no + 1].conclusion = g_rules[*rule_no].condition;
+		(*rule_no)++;
+	}
 }
 
 int		ft_getnum_rules(char *file)
@@ -117,7 +138,18 @@ int		ft_getnum_rules(char *file)
 			int i = 0;
 			ft_drop_spaces(line);
 			if (line[i] != '#' && line[i] != '=' && line[i] != '?' && line[i] != '\0')
+			{
+				char *temp = strstr(line, "<=>");
+				if (temp)
+				{
+					puts("if and only if found");
+					if (strchr(line, '#') == NULL)
+						re++;
+					else if ((long int)temp < (long int)(strchr(line, '#')))
+						re++;
+				}
 				re++;
+			}
 			if (line[i] == '=' && line[i + 1] == '>')
 				re++;
 		}
@@ -150,7 +182,7 @@ void	ft_read_info(char *file)
 				if (line[i] == '=' && line[i + 1] != '>')
 				{
 					while (isupper(line[++i]))
-						g_facts[(line[i] - 'A')] = 1;
+						g_default[(line[i] - 'A')] = 1;
 				}
 				else if (line[i] == '?')
 				{
@@ -166,8 +198,9 @@ void	ft_read_info(char *file)
 				}
 				else
 				{
-					get_rule(line, i, rule_no++);
-					ft_validate_rule(rule_no - 1, line_no);
+					get_rule(line, i, &rule_no);
+					ft_validate_rule(rule_no, line_no);
+					rule_no++;
 				}
 			}
 			line_no++;
@@ -186,14 +219,10 @@ void	ft_read_file(char *file)
 	printf("num rules %d\n",g_num_rules);
 	ft_read_info(file);
 
+	puts("\nrule base");
 	for (int f = 0; f < g_num_rules; f++)
 	{
-		printf("g_rules[%i]: ", f);
-		printf("%s\n", g_rules[f].condition);
+		printf("rules[%i]: %s => %s \n", f, g_rules[f].condition, g_rules[f].conclusion);
 	}
-	for (int f = 0; f < g_num_rules; f++)
-	{
-		printf("g_conclusion[%i]: ", f);
-		printf("%s\n", g_rules[f].conclusion);
-	}
+	puts("\nresults");
 }
