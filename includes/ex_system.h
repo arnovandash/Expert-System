@@ -6,7 +6,7 @@
 /*   By: rojones <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/26 16:55:21 by rojones           #+#    #+#             */
-/*   Updated: 2016/10/13 13:26:47 by rojones          ###   ########.fr       */
+/*   Updated: 2016/10/14 10:10:03 by arnovan-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@
 # include <stdio.h>
 # include <string.h>
 # include <ctype.h>
+
+# define C_RED \e[3m
 
 typedef struct	s_rule
 {
@@ -35,7 +37,7 @@ int		ft_and(int t1, int t2);
 int		ft_or(int t1, int t2);
 int		ft_xor(int t1, int t2);
 int		ft_negate(int t);
-int		ft_eval_condition(char *condition, int *solving);
+int		ft_eval_cond(char *condition, int *solving);
 void	ft_read_file(char *file);
 void	ft_read_info(char *file);
 char	*ft_strnew(size_t size);

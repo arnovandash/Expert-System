@@ -6,7 +6,7 @@
 /*   By: rojones <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/26 16:54:18 by rojones           #+#    #+#             */
-/*   Updated: 2016/10/14 08:29:52 by arnovan-         ###   ########.fr       */
+/*   Updated: 2016/10/14 09:47:42 by arnovan-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,16 +36,15 @@ int main (int ac, char **av)
 	i = -1;
 	while (++i < 26)
 		g_facts[i]= -1;
-
 	ft_read_file(av[1]);
 	i = 0;
 	while (g_prove[i] != '\0')
 	{
 		int solving[26];
-
 		bzero(solving, 26);
 		solving[g_prove[i] -'A'] = 1;
-		printf("\x1B[32mSolved for %c - Result: %d\n\n\x1B[0m",g_prove[i], ft_solve_for(g_prove[i], solving));
+		printf("\x1B[32mSolved for %c - Result: %d\n\n\x1B[0m"
+				,g_prove[i], ft_solve_for(g_prove[i], solving));
 		i++;
 	}
 }

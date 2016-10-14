@@ -6,7 +6,7 @@
 /*   By: rojones <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/27 15:43:40 by rojones           #+#    #+#             */
-/*   Updated: 2016/10/14 08:26:03 by arnovan-         ###   ########.fr       */
+/*   Updated: 2016/10/14 11:10:57 by arnovan-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,17 +61,17 @@ static int	ft_eval_brackets(char *condition, int *solving)
 	left = memcpy(left, condition, st);
 	temp = memcpy(temp, &condition[st + 1], end - st - 1);
 	right = memcpy(right, &condition[end + 1], strlen(condition) - end);
-	brace = ft_eval_condition(temp, solving);
+	brace = ft_eval_cond(temp, solving);
 	temp = ft_strnew(strlen(left) + strlen(right) + 1);
 	temp = memcpy(temp, left, strlen(left));
 	temp[strlen(left)] = brace + '0';
 	temp = strcat(temp, right);
 	free(left);
 	free(right);
-	return (ft_eval_condition(temp, solving));
+	return (ft_eval_cond(temp, solving));
 }
 
-int		ft_eval_condition(char *condition, int *solving)
+int		ft_eval_cond(char *condition, int *solving)
 {
 	int 	neg1 = 0;
 	int		neg2 = 0;
@@ -82,38 +82,36 @@ int		ft_eval_condition(char *condition, int *solving)
 
 	op = -2;
 	if (condition[0] != '!' && condition[1] == '\0')
-		op = ((isalpha(condition[0])) ? ft_solve_for(condition[0], solving) : condition[0] - '0');
+		op = ((isalpha(condition[0])) ? 
+				ft_solve_for(condition[0], solving) : condition[0] - '0');
 	else if (condition[0] == '!' && condition[2] == '\0')
 	{
-		op = ((isalpha(condition[1])) ? ft_solve_for(condition[1], solving) : condition[1] - '0');
+		op = ((isalpha(condition[1])) ? ft_solve_for(condition[1], solving)
+				: condition[1] - '0');
 		op = ft_negate(op);
 	}
-	else{
+	else
+	{
 		if (strchr(condition, '(') == NULL)
 		{
 			neg1 = (condition[0] == '!') ? 1 : 0;
 			neg2 = (condition[2 + neg1] == '!')?1 : 0;
-			t1 =(isalpha(condition[0 + neg1]))? ft_solve_for(condition[0 + neg1], solving) : condition[0 + neg1] - '0';
-			t2 =(isalpha(condition[2 + neg1 + neg2]))? ft_solve_for(condition[2 + neg1 + neg2], solving) : 
-				condition[2 + neg1 + neg2] - '0';
+			t1 =(isalpha(condition[0 + neg1]))? ft_solve_for(condition[0 +
+					neg1], solving) : condition[0 + neg1] - '0';
+			t2 =(isalpha(condition[2 + neg1 + neg2]))? ft_solve_for(condition[2
+					+ neg1 + neg2], solving) : condition[2 + neg1 + neg2] - '0';
 			if (neg1)
 				t1 = ft_negate(t1);
 			if (neg2)
 				t2 = ft_negate(t2);
 			if (t1 == -2 || t2 == -2)
 				return (-2);
-			switch (condition[1 + neg1]) 
-			{
-				case '+':
+			if (condition[1 + neg1] == '+')
 					op = ft_and(t1, t2);
-					break;
-				case '|':
+			else if (condition[1 + neg1] == '|')
 					op = ft_or(t1, t2);
-					break;
-				case '^':
+			else if (condition[1 + neg1] == '^')
 					op = ft_xor(t1, t2);
-					break;
-			}
 			if (condition[3 + neg1 + neg2] == '\0')
 				return (op);
 			else
@@ -121,7 +119,7 @@ int		ft_eval_condition(char *condition, int *solving)
 				ncon = ft_strnew(1 + (strlen(&condition[3 + neg1 + neg2])));
 				ncon[0] = '0' + op;
 				ncon = strcat(ncon, &condition[3 + neg1 + neg2]);
-				op = ft_eval_condition(ncon, solving);
+				op = ft_eval_cond(ncon, solving);
 			}
 		}
 		else
@@ -158,16 +156,18 @@ int	ft_solve_for(char fact, int *solving)
 		solving[fact - 'A'] = 1;
 		while (i < g_num_rules)
 		{
-			if (solving_term(g_rules[i].condition, solving) == 0 && (pos = ft_check_rule(g_rules[i].conclusion, fact)) != -1)
+			if (solving_term(g_rules[i].condition, solving) == 0 && (pos =
+						ft_check_rule(g_rules[i].conclusion, fact)) != -1)
 			{
-				if (strchr(g_rules[i].conclusion, '|') || strchr(g_rules[i].conclusion, '^'))
+				if (strchr(g_rules[i].conclusion, '|') ||
+						strchr(g_rules[i].conclusion, '^'))
 				{
 					printf("\x1B[31mWarning OR type operand in conclusion, result is undefined\x1B[0m\n");
 					re = -2;
 				}
 				else
 				{
-					re = ft_eval_condition(strdup(g_rules[i].condition), solving);
+					re = ft_eval_cond(strdup(g_rules[i].condition), solving);
 					if (pos != 0)
 					{
 						if (g_rules[i].conclusion[pos - 1] == '!')
@@ -187,7 +187,8 @@ int	ft_solve_for(char fact, int *solving)
 		solving[fact - 'A'] = 0;
 		if (final == -1)
 		{
-			printf("Solving %c from default value %d\n", fact, g_default[fact - 65]);
+			printf("Solving %c from default value %d\n", 
+					fact, g_default[fact - 65]);
 			return (g_default[fact - 65]);
 		}
 		else
@@ -199,7 +200,8 @@ int	ft_solve_for(char fact, int *solving)
 	}
 	else
 	{
-			printf("\x1B[33mUsing previous result of %c: %d\n\x1B[0m", fact, g_facts[fact - 'A']);
+			printf("\x1B[33mUsing previous result of \
+					%c: %d\n\x1B[0m", fact, g_facts[fact - 'A']);
 			return (g_facts[fact - 'A']);
 	}
 }
