@@ -6,7 +6,7 @@
 /*   By: rojones <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/26 16:54:18 by rojones           #+#    #+#             */
-/*   Updated: 2016/10/14 09:47:42 by arnovan-         ###   ########.fr       */
+/*   Updated: 2016/10/14 16:56:58 by arnovan-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,10 @@
 
 int main (int ac, char **av)
 {
-	int		i = 0;
+	int		i = 0;	
 	char	*file;
 
+	g_num_rules = 0;
 	file = NULL;
 	g_short = 0;
 	while (++i < ac)
@@ -36,7 +37,7 @@ int main (int ac, char **av)
 	i = -1;
 	while (++i < 26)
 		g_facts[i]= -1;
-	ft_read_file(av[1]);
+	ft_read_file(file);
 	i = 0;
 	while (g_prove[i] != '\0')
 	{

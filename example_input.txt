@@ -1,8 +1,9 @@
-C => E # C implies E
-A + (B + C) => D # A and B and C implies D
-A | B => C # A or B implies C
-A + !B => F # A and not B implies F
-C | !G => H # C or not G implies H
+C) => E # C implies E
+AV + (B + C) => D # A and B and C implies D
+A~ | B => C # A or B implies C
+B ++ !B => F # A and not B implies F
++B ++ !B => F # A and not B implies F
+C | => H # C or not G implies H
 V ^ W => X # V xor W implies X
 A + B => Y + Z # A and B implies Y and Z
 C | D => X + V # C or D implies X or V

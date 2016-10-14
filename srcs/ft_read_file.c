@@ -6,77 +6,30 @@
 /*   By: rojones <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/27 08:29:51 by rojones           #+#    #+#             */
-/*   Updated: 2016/10/14 07:59:22 by arnovan-         ###   ########.fr       */
+/*   Updated: 2016/10/14 18:14:06 by arnovan-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ex_system.h"
 
-static int ft_strlen_n(char *st)
+void		get_con(char *line, int i, int rule_no)
 {
-	int i = 0;
-	int re = 0;
+	int k;
+	int num;
 
-	while (st[i] != '\0' && st[i] != '#')
-	{
-		if (isspace(st[i]) == 0)
-			re++;
-		i++;
-	}
-	return (re);
-}
-
-static void ft_drop_spaces(char *line) 
-{
-	char *re;
-	int i = 0;
-	int j = 0;
-
-
-	re = line;
-	while(line[i] != '\0')
-	{
-		if (isspace(line[i]))
-			i++;
-		else
-			re[j++] = line[i++];
-	}
-	re[j] = '\0';
-}
-
-static int ft_strlen_rule(char *st)
-{
-	int i = 0;
-	int re = 0;	
-	while (st[i] != '\0' && st[i] != '#')
-	{
-		if (isspace(st[i]) == 0)
-			re++;
-		i++;
-	}
-	return (re);
-}
-
-void 	get_con(char *line, int i, int rule_no)
-{
-	int k = 0;
+	k = 0;
 	while ((line[i] == '<' || line[i] == '=' || line[i] == '>' ||
 				isspace(line[i])) && line[i] != '\0' && line[i] != '#')
 		i++;
 	g_rules[rule_no].conclusion = (char *)(malloc(ft_strlen_n(&line[i])));
 	while (line[i] != '#' && line[i] != '\0')
 	{
-		if (isspace(line[i]))
-			i++;
-		else if (line[i] == '!')
+		if (line[i] == '!')
 		{
-			int num = 0;
+			num = 0;
 			while ((line[i] == '!' || isspace(line[i])) && line[i] != '\0')
-			{
-				if (line[i] == '!')
+				if (line[i++] == '!')
 					num++;
-				i++;
-			}
 			if (num % 2 == 1)
 				g_rules[rule_no].conclusion[k++] = '!';
 		}
@@ -86,11 +39,13 @@ void 	get_con(char *line, int i, int rule_no)
 	g_rules[rule_no].conclusion[k] = '\0';
 }
 
-void 	get_rule(char *line, int i, int *rule_no)
+void 		get_rule(char *line, int i, int *rule_no)
 {
-	int k = 0;
-	int by = 0;
+	int k;
+	int by;
 
+	k = 0;
+	by = 0;
 	g_rules[*rule_no].condition = (char *)(malloc(ft_strlen_rule(&line[i])));
 	while (line[i] != '=' && line[i] != '<' && line[i] != '\0')
 	{
@@ -100,19 +55,15 @@ void 	get_rule(char *line, int i, int *rule_no)
 		{
 			int num = 0;
 			while ((line[i] == '!' || isspace(line[i])) && line[i] != '\0')
-			{
-				if (line[i] == '!')
+				if (line[i++] == '!')
 					num++;
-				i++;
-			}
 			if (num % 2 == 1)
 				g_rules[*rule_no].condition[k++] = '!';
 		}
 		else 
 			g_rules[*rule_no].condition[k++] = line[i++];
 	}
-	if (line[i] == '<')
-		by = 1;
+	by = (line[i] == '<') ? 1 : 0;
 	g_rules[*rule_no].condition[k] = '\0';
 	get_con(line, i, *rule_no);
 	if(by == 1)
@@ -123,106 +74,102 @@ void 	get_rule(char *line, int i, int *rule_no)
 	}
 }
 
-int		ft_getnum_rules(char *file)
+int			ft_getnum_rules(char *file, t_file *f)
 {
-	FILE 	*fp;
-	int		re = 0;
-	char	*line = NULL;
-	size_t	n = 0;
+	int i;
 
-	fp = fopen(file, "r");
-	if (fp != NULL)
+	f->fp = fopen(file, "r");
+	if (f->fp != NULL)
 	{
-		while (getline(&line, &n, fp) != -1)
+		while (getline(&f->line, &f->n, f->fp) != -1)
 		{
-			int i = 0;
-			ft_drop_spaces(line);
-			if (line[i] != '#' && line[i] != '=' && line[i] != '?' && line[i] != '\0')
+			i = 0;
+			ft_drop_spaces(f->line);
+			if (f->line[i] != '#' && f->line[i] != '=' &&
+					f->line[i] != '?' && f->line[i] != '\0')
 			{
-				char *temp = strstr(line, "<=>");
+				char *temp = strstr(f->line, "<=>");
 				if (temp)
 				{
-					puts("if and only if found");
-					if (strchr(line, '#') == NULL)
-						re++;
-					else if ((long int)temp < (long int)(strchr(line, '#')))
-						re++;
+					if (strchr(f->line, '#') == NULL)
+						f->re++;
+					else if ((long int)temp < (long int)(strchr(f->line, '#')))
+						f->re++;
 				}
-				re++;
+				f->re++;
 			}
-			if (line[i] == '=' && line[i + 1] == '>')
-				re++;
+			if (f->line[i] == '=' && f->line[i + 1] == '>')
+				f->re++;
 		}
-		free(line);
-		line = NULL;
-		fclose(fp);
+		free(f->line);
+		f->line = NULL;
+		fclose(f->fp);
 	}
-	return (re);
+	return (f->re);
 }
 
-void	ft_read_info(char *file)
+void		ft_read_info(char *file, t_file *f)
 {
-	FILE 	*fp;
-	char	*line = NULL;
-	size_t	n = 0;
-	int		rule_no = 0;
-	int		s = 0;
-	int		line_no = 1;
+	int		i;
 
-	fp = fopen(file, "r");
-	if (fp != NULL)
+	f->fp = fopen(file, "r");
+	if (f->fp != NULL)
 	{
-		while (getline(&line, &n, fp) != -1)
+		while (getline(&f->line, &f->n, f->fp) != -1)
 		{
-			int i = 0;
-			*(strrchr(line,'\n'))='\0';
-			ft_drop_spaces(line);
-			if (line[i] != '#' && line[i] != '\0')
+			i = 0;
+			*(strrchr(f->line,'\n'))='\0';
+			ft_drop_spaces(f->line);
+			if (f->line[i] != '#' && f->line[i] != '\0')
 			{
-				if (line[i] == '=' && line[i + 1] != '>')
+				if (f->line[i] == '=' && f->line[i + 1] != '>')
 				{
-					while (isupper(line[++i]))
-						g_default[(line[i] - 'A')] = 1;
+					while (isupper(f->line[++i]))
+						g_default[(f->line[i] - 'A')] = 1;
 				}
-				else if (line[i] == '?')
+				else if (f->line[i] == '?')
 				{
-					g_prove = (char*)(malloc(ft_strlen_n(&line[i])));
-					i++;
-					while(line[i] != '\0' && line[i] != '#')
+					g_prove = (char*)(malloc(ft_strlen_n(&f->line[i++])));
+					while(f->line[i] != '\0' && f->line[i] != '#')
 					{
-						if (isupper(line[i]))
-							g_prove[s++]=line[i];
+						if (isupper(f->line[i]))
+							g_prove[f->s++]=f->line[i];
 						i++;
 					}
-					g_prove[s]='\0';
+					g_prove[f->s]='\0';
 				}
 				else
 				{
-					get_rule(line, i, &rule_no);
-					ft_validate_rule(rule_no, line_no);
-					rule_no++;
+					get_rule(f->line, i, &g_rule_no);
+					ft_validate_rule(g_rule_no, f->line_no);
+					g_rule_no++;
 				}
 			}
-			line_no++;
+			f->line_no++;
 		}
-		free(line);
-		line = NULL;
+		free(f->line);
+		f->line = NULL;
 	}
-	fclose(fp);
+	fclose(f->fp);
 }
 
-void	ft_read_file(char *file)
+void		ft_read_file(char *file)
 {
+	int		i;
+	t_file	f;
+
+	i = -1;
 	puts ("Reading file...");
-	g_num_rules = ft_getnum_rules(file);
+	init_file_struct(&f);
+	g_num_rules = ft_getnum_rules(file, &f);
 	g_rules = (t_rule*)(malloc(g_num_rules * sizeof(t_rule)));
 	printf("Number of rules: %d\n\n",g_num_rules);
-	ft_read_info(file);
+	init_file_struct(&f);
+	ft_read_info(file, &f);
 
 	puts("\nRule base:");
-	for (int f = 0; f < g_num_rules; f++)
-	{
-		printf("Rule[%02i]: %s => %s \n", f, g_rules[f].condition, g_rules[f].conclusion);
-	}
+	while (++i < g_num_rules)
+		printf("Rule[%02i]: %s => %s \n",
+				i, g_rules[i].condition, g_rules[i].conclusion);
 	puts("\nResults:");
 }
