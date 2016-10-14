@@ -6,7 +6,7 @@
 /*   By: rojones <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/27 08:29:51 by rojones           #+#    #+#             */
-/*   Updated: 2016/10/13 12:09:58 by rojones          ###   ########.fr       */
+/*   Updated: 2016/10/14 07:59:22 by arnovan-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -213,16 +213,16 @@ void	ft_read_info(char *file)
 
 void	ft_read_file(char *file)
 {
-	puts ("read file called");
+	puts ("Reading file...");
 	g_num_rules = ft_getnum_rules(file);
 	g_rules = (t_rule*)(malloc(g_num_rules * sizeof(t_rule)));
-	printf("num rules %d\n",g_num_rules);
+	printf("Number of rules: %d\n\n",g_num_rules);
 	ft_read_info(file);
 
-	puts("\nrule base");
+	puts("\nRule base:");
 	for (int f = 0; f < g_num_rules; f++)
 	{
-		printf("rules[%i]: %s => %s \n", f, g_rules[f].condition, g_rules[f].conclusion);
+		printf("Rule[%02i]: %s => %s \n", f, g_rules[f].condition, g_rules[f].conclusion);
 	}
-	puts("\nresults");
+	puts("\nResults:");
 }

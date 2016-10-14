@@ -6,7 +6,7 @@
 /*   By: rojones <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/26 16:54:18 by rojones           #+#    #+#             */
-/*   Updated: 2016/10/13 13:28:18 by rojones          ###   ########.fr       */
+/*   Updated: 2016/10/14 08:29:52 by arnovan-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ int main (int ac, char **av)
 
 		bzero(solving, 26);
 		solving[g_prove[i] -'A'] = 1;
-		printf("result of %c is %d\n\n",g_prove[i], ft_solve_for(g_prove[i], solving));
+		printf("\x1B[32mSolved for %c - Result: %d\n\n\x1B[0m",g_prove[i], ft_solve_for(g_prove[i], solving));
 		i++;
 	}
 }

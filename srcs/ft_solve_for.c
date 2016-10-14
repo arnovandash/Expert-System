@@ -6,7 +6,7 @@
 /*   By: rojones <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/27 15:43:40 by rojones           #+#    #+#             */
-/*   Updated: 2016/10/13 13:28:20 by rojones          ###   ########.fr       */
+/*   Updated: 2016/10/14 08:26:03 by arnovan-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -162,7 +162,7 @@ int	ft_solve_for(char fact, int *solving)
 			{
 				if (strchr(g_rules[i].conclusion, '|') || strchr(g_rules[i].conclusion, '^'))
 				{
-					printf("\x1B[31mWarning OR type operand in conclusion resuld undefinged\x1B[0m\n");
+					printf("\x1B[31mWarning OR type operand in conclusion, result is undefined\x1B[0m\n");
 					re = -2;
 				}
 				else
@@ -174,11 +174,11 @@ int	ft_solve_for(char fact, int *solving)
 							re = ft_negate(re);
 					}
 				}
-				printf("used rule [%s => %s] to solve %c result %d\n", g_rules[i].condition, g_rules[i].conclusion, fact, re);
+				printf("Used rule [ \"%s => %s\" ] to solve %c - Result: %d\n", g_rules[i].condition, g_rules[i].conclusion, fact, re);
 				if (final == -1)
 					final = re;
 				else if (re != final && re != -2 && final != -2)
-					printf("\x1B[31mWarning contradicting results for %c  previous results %d current result %d\x1B[0m\n", fact, final, re);
+					printf("\x1B[31mWarning contradicting results for %c - Previous Result: %d, Current Result: %d\x1B[0m\n", fact, final, re);
 				else if (re != -2)
 					final = re;
 			}
@@ -187,19 +187,19 @@ int	ft_solve_for(char fact, int *solving)
 		solving[fact - 'A'] = 0;
 		if (final == -1)
 		{
-			printf("solving %c from default value %d\n", fact, g_default[fact - 65]);
+			printf("Solving %c from default value %d\n", fact, g_default[fact - 65]);
 			return (g_default[fact - 65]);
 		}
 		else
 		{
-			printf("colective result of %c is %d\n", fact, final);
+			printf("Collective result of %c : %d\n", fact, final);
 			g_facts[fact - 'A'] = final;
 			return (final);
 		}
 	}
 	else
 	{
-			printf("\x1B[33musing previous result of %c is %d\n\x1B[0m", fact, g_facts[fact - 'A']);
+			printf("\x1B[33mUsing previous result of %c: %d\n\x1B[0m", fact, g_facts[fact - 'A']);
 			return (g_facts[fact - 'A']);
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: rojones <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/10/12 10:25:39 by rojones           #+#    #+#             */
-/*   Updated: 2016/10/13 11:14:12 by rojones          ###   ########.fr       */
+/*   Updated: 2016/10/14 07:56:20 by arnovan-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 static int	ft_validate_str(char *con, int line_no)
 {
-	printf("\x1B[0mValidating term [%s] on line %d\n", con, line_no);
+	printf("\x1B[0mValidating term [ \"%s\" ] on line %d\n", con, line_no);
 	int i;
 	int	f;
 	int	op;
@@ -77,7 +77,7 @@ static int	ft_validate_str(char *con, int line_no)
 		}
 		else if (con[i] != '!')
 		{
-			printf("\x1B[31mERROR: Symbol[%c] not recognised\n\x1B[0m", con[i]);
+			printf("\x1B[31mERROR: Symbol[ \'%c\' ] not recognised\n\x1B[0m", con[i]);
 			return (0);
 		}
 		i++;
