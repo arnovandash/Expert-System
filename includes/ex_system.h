@@ -6,7 +6,7 @@
 /*   By: rojones <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/26 16:55:21 by rojones           #+#    #+#             */
-/*   Updated: 2016/10/14 14:43:21 by rojones          ###   ########.fr       */
+/*   Updated: 2016/10/15 09:16:22 by rojones          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,7 @@ int				g_num_rules;
 int				g_facts[26];
 int				g_default[26];
 int				g_short;
+int				g_infer;
 t_rule			*g_rules;
 char			*g_prove;
 

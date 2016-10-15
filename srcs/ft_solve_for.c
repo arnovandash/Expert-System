@@ -6,7 +6,7 @@
 /*   By: rojones <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/27 15:43:40 by rojones           #+#    #+#             */
-/*   Updated: 2016/10/14 14:33:04 by rojones          ###   ########.fr       */
+/*   Updated: 2016/10/15 09:48:55 by rojones          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,8 @@ void		ft_run_check(int *solving, t_solve *sv, char fact)
 {
 	int	re;
 
-	if ((re = ft_eval_cond(strdup(g_rules[sv->i].condition), solving)) == 1)
+	re = ft_eval_cond(strdup(g_rules[sv->i].condition), solving);
+	if ((re == 1 && g_infer == 0) || g_infer == 1)
 	{
 		if (strchr(g_rules[sv->i].conclusion, '|') ||
 				strchr(g_rules[sv->i].conclusion, '^'))
