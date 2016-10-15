@@ -6,7 +6,7 @@
 /*   By: rojones <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/26 16:55:21 by rojones           #+#    #+#             */
-/*   Updated: 2016/10/15 10:16:59 by rojones          ###   ########.fr       */
+/*   Updated: 2016/10/15 13:27:54 by arnovan-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,8 @@ changed\n\x1B[0m", g_rules[sv->i].condition, re, fact
 # define T_OPEN1 "\x1B[31mERROR: Condition ends with an open term. Add fact "
 # define T_OPEN2 "after the last operator\x1B[0m"
 # define S_UNKNWN "\x1B[31mERROR: Symbol[ \'%c\' ] not recognised\n\x1B[0m"
+# define CONC "conclusion"
+# define COND "condition"
 
 typedef struct	s_val
 {
@@ -114,4 +116,7 @@ int				ft_xor(int t1, int t2);
 void			get_con(char *line, int i, int rule_no);
 void			get_rule(char *line, int i, int *rule_no);
 void			init_file_struct(t_file *f);
+int				rule_check(t_file *f);
+void			read_file_sub(t_file *f);
+
 #endif

@@ -6,20 +6,11 @@
 /*   By: arnovan- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/10/14 16:33:06 by arnovan-          #+#    #+#             */
-/*   Updated: 2016/10/14 17:29:57 by arnovan-         ###   ########.fr       */
+/*   Updated: 2016/10/15 13:27:40 by arnovan-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ex_system.h"
-
-void		init_file_struct(t_file *f)
-{
-	f->re = 0;
-	f->line = NULL;
-	f->line_no = 1;
-	f->n = 0;
-	f->s = 0;
-}
 
 int			ft_strlen_n(char *st)
 {
@@ -72,4 +63,56 @@ int			ft_strlen_rule(char *st)
 	return (re);
 }
 
+int			rule_check(t_file *f)
+{
+	int i;
 
+	i = 0;
+	ft_drop_spaces(f->line);
+	if (f->line[i] != '#' && f->line[i] != '=' &&
+			f->line[i] != '?' && f->line[i] != '\0')
+	{
+		char *temp = strstr(f->line, "<=>");
+		if (temp)
+		{
+			if (strchr(f->line, '#') == NULL)
+				f->re++;
+			else if ((long int)temp < (long int)(strchr(f->line, '#')))
+				f->re++;
+		}
+		f->re++;
+	}
+	(f->line[i] == '=' && f->line[i + 1] == '>') ? f->re++ : 0;
+	return (f->re);
+}
+
+void		read_file_sub(t_file *f)
+{
+	int	i;
+
+	i = 0;
+	*(strrchr(f->line,'\n'))='\0';
+	ft_drop_spaces(f->line);
+	if (f->line[i] != '#' && f->line[i] != '\0')
+	{
+		if (f->line[i] == '=' && f->line[i + 1] != '>')
+		{
+			while (isupper(f->line[++i]))
+				g_default[(f->line[i] - 'A')] = 1;
+		}
+		else if (f->line[i] == '?')
+		{
+			g_prove = (char*)(malloc(ft_strlen_n(&f->line[i++])));
+			while(f->line[i] != '\0' && f->line[i] != '#')
+				if (isupper(f->line[i++]))
+					g_prove[f->s++]=f->line[i - 1];
+			g_prove[f->s]='\0';
+		}
+		else
+		{
+			get_rule(f->line, i, &g_rule_no);
+			ft_validate_rule(g_rule_no++, f->line_no);
+		}
+	}
+	f->line_no++;
+}

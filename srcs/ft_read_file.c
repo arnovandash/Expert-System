@@ -6,7 +6,7 @@
 /*   By: rojones <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/27 08:29:51 by rojones           #+#    #+#             */
-/*   Updated: 2016/10/15 10:34:02 by rojones          ###   ########.fr       */
+/*   Updated: 2016/10/15 13:27:52 by arnovan-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,22 +43,19 @@ void 		get_rule(char *line, int i, int *rule_no)
 {
 	int k;
 	int by;
+	int num;
 
 	k = 0;
 	by = 0;
 	g_rules[*rule_no].condition = (char *)(malloc(ft_strlen_rule(&line[i])));
 	while (line[i] != '=' && line[i] != '<' && line[i] != '\0')
 	{
-		if (isspace(line[i]))
-			i++;
-		else if (line[i] == '!')
+		if (line[i] == '!')
 		{
-			int num = 0;
+			num = 0;
 			while ((line[i] == '!' || isspace(line[i])) && line[i] != '\0')
-				if (line[i++] == '!')
-					num++;
-			if (num % 2 == 1)
-				g_rules[*rule_no].condition[k++] = '!';
+				(line[i++] == '!') ? num++ : 0;
+			(num % 2 == 1) ? g_rules[*rule_no].condition[k++] = '!' : 0;
 		}
 		else 
 			g_rules[*rule_no].condition[k++] = line[i++];
@@ -66,41 +63,18 @@ void 		get_rule(char *line, int i, int *rule_no)
 	by = (line[i] == '<') ? 1 : 0;
 	g_rules[*rule_no].condition[k] = '\0';
 	get_con(line, i, *rule_no);
-	if(by == 1)
-	{
-		g_rules[*rule_no + 1].condition = g_rules[*rule_no].conclusion;
-		g_rules[*rule_no + 1].conclusion = g_rules[*rule_no].condition;
-		(*rule_no)++;
-	}
+	by ? g_rules[*rule_no + 1].condition = g_rules[*rule_no].conclusion : 0;
+	by ? g_rules[*rule_no + 1].conclusion = g_rules[*rule_no].condition : 0;
+	by ? (*rule_no)++ : 0;
 }
 
 int			ft_getnum_rules(char *file, t_file *f)
 {
-	int i;
-
 	f->fp = fopen(file, "r");
 	if (f->fp != NULL)
 	{
 		while (getline(&f->line, &f->n, f->fp) != -1)
-		{
-			i = 0;
-			ft_drop_spaces(f->line);
-			if (f->line[i] != '#' && f->line[i] != '=' &&
-					f->line[i] != '?' && f->line[i] != '\0')
-			{
-				char *temp = strstr(f->line, "<=>");
-				if (temp)
-				{
-					if (strchr(f->line, '#') == NULL)
-						f->re++;
-					else if ((long int)temp < (long int)(strchr(f->line, '#')))
-						f->re++;
-				}
-				f->re++;
-			}
-			if (f->line[i] == '=' && f->line[i + 1] == '>')
-				f->re++;
-		}
+			f->re = rule_check(f);
 		free(f->line);
 		f->line = NULL;
 		fclose(f->fp);
@@ -115,40 +89,11 @@ int			ft_getnum_rules(char *file, t_file *f)
 
 void		ft_read_info(char *file, t_file *f)
 {
-	int		i;
-
 	f->fp = fopen(file, "r");
 	if (f->fp != NULL)
 	{
 		while (getline(&f->line, &f->n, f->fp) != -1)
-		{
-			i = 0;
-			*(strrchr(f->line,'\n'))='\0';
-			ft_drop_spaces(f->line);
-			if (f->line[i] != '#' && f->line[i] != '\0')
-			{
-				if (f->line[i] == '=' && f->line[i + 1] != '>')
-				{
-					while (isupper(f->line[++i]))
-						g_default[(f->line[i] - 'A')] = 1;
-				}
-				else if (f->line[i] == '?')
-				{
-					g_prove = (char*)(malloc(ft_strlen_n(&f->line[i++])));
-					while(f->line[i] != '\0' && f->line[i] != '#')
-						if (isupper(f->line[i++]))
-							g_prove[f->s++]=f->line[i - 1];
-					g_prove[f->s]='\0';
-				}
-				else
-				{
-					get_rule(f->line, i, &g_rule_no);
-					ft_validate_rule(g_rule_no, f->line_no);
-					g_rule_no++;
-				}
-			}
-			f->line_no++;
-		}
+			read_file_sub(f);
 		free(f->line);
 		f->line = NULL;
 	}
