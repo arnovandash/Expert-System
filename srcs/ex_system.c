@@ -6,7 +6,7 @@
 /*   By: rojones <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/26 16:54:18 by rojones           #+#    #+#             */
-/*   Updated: 2016/10/15 09:48:53 by rojones          ###   ########.fr       */
+/*   Updated: 2016/10/15 10:23:42 by rojones          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,16 @@
 
 int main (int ac, char **av)
 {
-	int		i = 0;
+	int		i = 0;	
 	char	*file;
 
+	g_num_rules = 0;
 	file = NULL;
 	g_short = 0;
 	if (ac == 1)
 	{
-		puts ("expecting './ex_sys [-s | -i] knowladgebase_file'");
+		puts ("Expecting './ex_sys [-s | -i] knowledgebase_file'");
+		return (0);
 	}
 	while (++i < ac)
 	{

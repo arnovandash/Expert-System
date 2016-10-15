@@ -6,7 +6,7 @@
 /*   By: rojones <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/27 15:43:40 by rojones           #+#    #+#             */
-/*   Updated: 2016/10/15 09:48:55 by rojones          ###   ########.fr       */
+/*   Updated: 2016/10/15 10:20:43 by rojones          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,8 +104,8 @@ int			ft_solve_for(char fact, int *solving)
 	}
 	else
 	{
-		printf("\x1B[33mUsing previous result of \
-				%c: %d\n\x1B[0m", fact, g_facts[fact - 'A']);
+		printf("\x1B[33mUsing previous result of %c: %d\n\x1B[0m",
+			   	fact, g_facts[fact - 'A']);
 		return (g_facts[fact - 'A']);
 	}
 }
