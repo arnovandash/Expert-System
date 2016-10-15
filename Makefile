@@ -6,7 +6,7 @@
 #    By: adippena <angusdippenaar@gmail.com>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/07/09 12:47:08 by adippena          #+#    #+#              #
-#    Updated: 2016/09/27 14:13:19 by rojones          ###   ########.fr        #
+#    Updated: 2016/10/15 14:35:51 by arnovan-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,8 +17,18 @@ LFLAGS		=	$(INCLUDE)
 CC			=	gcc
 LD			=	gcc 
 
-INC			=	$(shell find includes -name "*.h")
-SRC			=	$(shell find srcs -name "*.c")
+INC			=	includes/ex_system.h
+
+SRC			=	srcs/ex_system.c			\
+				srcs/ft_read_file.c			\
+				srcs/ft_strnew.c			\
+				srcs/ft_eval_brackets.c		\
+				srcs/ft_read_file_extras.c	\
+				srcs/ft_validate.c			\
+				srcs/ft_eval_cond.c			\
+				srcs/ft_solve_for.c			\
+				srcs/operations.c
+
 OBJ			=	$(SRC:srcs/%.c=build/%.o)
 
 all: exp_sys
