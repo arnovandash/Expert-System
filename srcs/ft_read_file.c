@@ -6,7 +6,7 @@
 /*   By: rojones <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/27 08:29:51 by rojones           #+#    #+#             */
-/*   Updated: 2016/10/15 13:27:52 by arnovan-         ###   ########.fr       */
+/*   Updated: 2016/10/15 15:14:55 by rojones          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,5 +118,4 @@ void		ft_read_file(char *file)
 	while (++i < g_num_rules)
 		printf("Rule[%02i]: %s => %s \n",
 				i, g_rules[i].condition, g_rules[i].conclusion);
-	puts("\nResults:");
 }

@@ -6,7 +6,7 @@
 /*   By: rojones <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/26 16:54:18 by rojones           #+#    #+#             */
-/*   Updated: 2016/10/15 13:20:24 by arnovan-         ###   ########.fr       */
+/*   Updated: 2016/10/15 15:22:48 by rojones          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,8 @@ static void	exp_sys(char *file)
 	while (++i < 26)
 		g_facts[i]= -1;
 	ft_read_file(file);
+	puts("\nResults:");
+	puts(NOTE);
 	i = 0;
 	while (g_prove[i] != '\0')
 	{

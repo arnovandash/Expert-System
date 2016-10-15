@@ -6,7 +6,7 @@
 /*   By: rojones <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/26 16:55:21 by rojones           #+#    #+#             */
-/*   Updated: 2016/10/15 13:27:54 by arnovan-         ###   ########.fr       */
+/*   Updated: 2016/10/15 15:24:25 by rojones          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,8 @@ changed\n\x1B[0m", g_rules[sv->i].condition, re, fact
 # define S_UNKNWN "\x1B[31mERROR: Symbol[ \'%c\' ] not recognised\n\x1B[0m"
 # define CONC "conclusion"
 # define COND "condition"
+# define NOTE "NOTE:\x1B[32m 1 = TRUE,\x1B[31m 0 = FALSE,\x1B[33m \
+-2 = UNDEFINED.\x1B[0m\n"
 
 typedef struct	s_val
 {
